@@ -1,0 +1,44 @@
+"#textField":{
+	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+	top:"13",
+	left:"10",
+	right: "300",
+	value: "Enter your task.",
+	textAlign: 'left',
+	height: "65",
+	font:{
+		fontSize: 50,
+		fontWeight:'bold',
+	}
+},
+"#win":{
+	backgroundColor: "white",
+	layout: "vertical"
+}
+"#headerView":{
+	top: "50",
+	height: "Ti.UI.SIZE"
+}
+"#addButton":{
+	right:"10",
+	top:"10",
+	height:"70",
+	width: "80"
+}
+"#dishes":{
+	image:"/dishes.png", 
+	width:"70", 
+	height:"70", 
+	right:"110",
+	top:"10"
+}
+"#laundery":{
+	image:"/laundery.png", 
+	width:"70", 
+	height:"70",
+	right:"200", 
+	top:"10"
+}
+"#tableView":{
+	top:"5",
+}

@@ -1,0 +1,8 @@
+"C:/Users/Yair/Titanium_Studio_Workspace/todolist/build/android/gen/android/support/v7/appcompat/R.java"
+"C:/Users/Yair/Titanium_Studio_Workspace/todolist/build/android/gen/com/mashu/ToDoList/ApplicationStylesheet.java"
+"C:/Users/Yair/Titanium_Studio_Workspace/todolist/build/android/gen/com/mashu/ToDoList/AssetCryptImpl.java"
+"C:/Users/Yair/Titanium_Studio_Workspace/todolist/build/android/gen/com/mashu/ToDoList/R.java"
+"C:/Users/Yair/Titanium_Studio_Workspace/todolist/build/android/gen/com/mashu/ToDoList/TodolistActivity.java"
+"C:/Users/Yair/Titanium_Studio_Workspace/todolist/build/android/gen/com/mashu/ToDoList/TodolistAppInfo.java"
+"C:/Users/Yair/Titanium_Studio_Workspace/todolist/build/android/gen/com/mashu/ToDoList/TodolistApplication.java"
+"C:/Users/Yair/Titanium_Studio_Workspace/todolist/build/android/gen/ti/modules/titanium/ui/R.java"

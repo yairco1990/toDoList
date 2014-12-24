@@ -1,0 +1,14 @@
+<Alloy>
+    <Window id="win">
+    	<View id="headerView">
+    		<TextField id="textField" onClick="cleanText"/>
+    		<Button id = "addButton">
+    			Add!
+    		</Button>
+    		<ImageView id="dishes" onClick="doClick" />
+    		<ImageView id="laundery" onClick="doClick"/>
+    	</View>
+    	<View height="2" backgroundColor="#abce12" top="5"/>
+    	<TableView id = "tableView"/>	
+    </Window>
+</Alloy>
