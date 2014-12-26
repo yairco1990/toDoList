@@ -1,14 +1,16 @@
 <Alloy>
-    <Window id="win">
-    	<View id="headerView">
-    		<TextField id="textField" onClick="cleanText"/>
-    		<Button id = "addButton">
-    			Add!
-    		</Button>
-    		<ImageView id="dishes" onClick="doClick" />
-    		<ImageView id="laundery" onClick="doClick"/>
-    	</View>
-    	<View height="2" backgroundColor="#abce12" top="5"/>
-    	<TableView id = "tableView"/>	
-    </Window>
+	<Window id="win">
+		<View height="60" backgroundColor="#848484">
+			<TextField id="textField" onClick="cleanText"/>
+			<Button id = "addButton">Add!</Button>
+		</View>
+		<View id = "ChooseImage">
+			<ImageView id="dishes" onClick="doClick" />
+			<ImageView id="laundery" onClick="doClick" />
+		</View>
+		<Button id = "deleteAllButton">Click to delete all</Button>
+		<View height="2" backgroundColor="#abce12" top="2"/>
+		<TableView id = "tableView"/>
+		<View height="5" backgroundColor="#848484"></View>
+	</Window>
 </Alloy>

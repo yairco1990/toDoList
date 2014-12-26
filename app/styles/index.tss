@@ -1,44 +1,49 @@
-"#textField":{
-	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-	top:"13",
-	left:"10",
-	right: "300",
-	value: "Enter your task.",
-	textAlign: 'left',
-	height: "65",
-	font:{
-		fontSize: 50,
-		fontWeight:'bold',
-	}
-},
 "#win":{
 	backgroundColor: "white",
 	layout: "vertical"
-}
-"#headerView":{
-	top: "50",
-	height: "Ti.UI.SIZE"
+},
+"#ChooseImage":{
+	backgroundColor: "#848484",
+	height: "75"
+},
+"#tableView":{
+	top: "5"
+},
+"#textField":{
+	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+	top: "3",
+	left: "10",
+	right: "100",
+	value: "Enter your task",
+	textAlign: 'left',
+	height: "55",
+	font:{
+		fontSize: 27,
+		fontWeight: 'bold'
+	}
 }
 "#addButton":{
-	right:"10",
-	top:"10",
-	height:"70",
+	//backgroundColor: "white",
+	right: "10",
+	top: "3",
+	height: "55",
 	width: "80"
-}
+},
+"#deleteAllButton":{
+	height: "50",
+	width: Titanium.UI.FILL
+},
 "#dishes":{
-	image:"/dishes.png", 
-	width:"70", 
-	height:"70", 
-	right:"110",
-	top:"10"
-}
+	image: "/dishes.png",
+	width: "70",
+	height: "70",
+	right: "110",
+	top: "3"
+},
 "#laundery":{
-	image:"/laundery.png", 
-	width:"70", 
-	height:"70",
-	right:"200", 
-	top:"10"
-}
-"#tableView":{
-	top:"5",
+	image: "/laundery.png",
+	width: "70",
+	height: "70",
+	right: "200",
+	top: "3"
 }
