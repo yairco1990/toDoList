@@ -39,6 +39,7 @@ function Controller() {
         var DeleteCheckbox = Ti.UI.createButton({
             id: "delrow",
             myrow: row,
+            mylabel: label,
             title: "Delete",
             bottom: 8,
             right: 10,
@@ -116,21 +117,21 @@ function Controller() {
     });
     $.__views.win && $.addTopLevelView($.__views.win);
     $.__views.__alloyId0 = Ti.UI.createView({
-        height: "75",
+        height: "60",
         backgroundColor: "#848484",
         id: "__alloyId0"
     });
     $.__views.win.add($.__views.__alloyId0);
     $.__views.textField = Ti.UI.createTextField({
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-        top: "8",
+        top: "3",
         left: "10",
         right: "100",
         value: "Enter your task",
         textAlign: "left",
-        height: "62",
+        height: "55",
         font: {
-            fontSize: 30,
+            fontSize: 27,
             fontWeight: "bold"
         },
         id: "textField"
@@ -138,10 +139,9 @@ function Controller() {
     $.__views.__alloyId0.add($.__views.textField);
     cleanText ? $.__views.textField.addEventListener("click", cleanText) : __defers["$.__views.textField!click!cleanText"] = true;
     $.__views.addButton = Ti.UI.createButton({
-        backgroundColor: "white",
         right: "10",
-        top: "7",
-        height: "70",
+        top: "3",
+        height: "55",
         width: "80",
         title: "Add!",
         id: "addButton"
@@ -205,7 +205,6 @@ function Controller() {
     db.execute("CREATE TABLE IF NOT EXISTS Tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, task TEXT);");
     var sql = db.execute("SELECT * FROM Tasks");
     while (sql.isValidRow()) {
-        alert(sql.fieldByName("id"));
         reloadFromDatabase(sql.fieldByName("task"));
         sql.next();
     }
@@ -287,10 +286,9 @@ function Controller() {
     };
     $.tableView.addEventListener("click", function(event) {
         if ("delrow" == event.source.id) {
-            console.log(event);
             $.tableView.deleteRow(event.index);
             var db = Titanium.Database.open("version6");
-            db.execute("DELETE FROM Tasks WHERE id = (?)", "yair");
+            db.execute("DELETE FROM Tasks WHERE task = (?)", event.source.mylabel.getText());
             db.close();
         }
     });

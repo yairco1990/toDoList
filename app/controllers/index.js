@@ -1,25 +1,30 @@
 $.win.open();
 
 //database addition
-var db = Titanium.Database.install('\db\RowData.db', 'version6');
-db.execute('CREATE TABLE IF NOT EXISTS Tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, task TEXT);');
+var db = Titanium.Database.install('\db\RowData.db', 'version8');
+db.execute('CREATE TABLE IF NOT EXISTS Tasks(task TEXT, image TEXT, done TEXT);');
 var sql = db.execute('SELECT * FROM Tasks');
 while (sql.isValidRow()) {
-	reloadFromDatabase(sql.fieldByName('task'));
+	loadFromDatabase(sql.fieldByName('task'), sql.fieldByName('image'), sql.fieldByName('done'));
 	sql.next();
 }
 //
 
-function reloadFromDatabase(myText) {
+function loadFromDatabase(myText, myImage, done) {
 	var row = Ti.UI.createTableViewRow({
 		height : "80"
 	});
 	var label = Ti.UI.createLabel({
-		text : myText,
+		right : "80",
+		left : "85",
+		text : myText, //set the text to myText from database
 		height : Titanium.UI.SIZE,
 		width : Titanium.UI.SIZE,
 		color : "black",
 		layout : 'vertical',
+		font : {
+			fontSize : 20,
+		}
 	});
 	var DoneCheckbox = Ti.UI.createButton({
 		title : 'Done',
@@ -33,6 +38,7 @@ function reloadFromDatabase(myText) {
 		backgroundColor : 'green',
 		backgroundImage : 'none',
 		color : '#fff',
+		mylabel : label,
 		font : {
 			fontSize : 23,
 			fontWeight : 'bold'
@@ -58,11 +64,8 @@ function reloadFromDatabase(myText) {
 			fontWeight : 'bold'
 		}
 	});
-	var imageShow = "/appicon.png";
-	if ($.dishes.image == '/Vdishes.png')
-		imageShow = "/dishes.png";
-	else if ($.laundery.image == '/Vlaundery.png')
-		imageShow = "/laundery.png";
+	//load the image from database
+	var imageShow = myImage;
 	var image = Ti.UI.createView({
 		backgroundImage : imageShow,
 		width : "70",
@@ -74,26 +77,43 @@ function reloadFromDatabase(myText) {
 	row.add(image);
 	row.add(label);
 	$.tableView.appendRow(row);
-	DoneCheckbox.addEventListener("click", function(event) {
+	if (done == "true") {
 		row.backgroundColor = "#abce12";
 		var lineView = Titanium.UI.createView({
+			left : "85",
 			width : label.getSize().width,
 			height : 1,
 			backgroundColor : label.color ? label.color : 'black',
 		});
 		row.add(lineView);
-	});
+	} else {
+		DoneCheckbox.addEventListener("click", function(event) {
+			row.backgroundColor = "#abce12";
+			var lineView = Titanium.UI.createView({
+				left : "85",
+				width : label.getSize().width,
+				height : 1,
+				backgroundColor : label.color ? label.color : 'black',
+			});
+			row.add(lineView);
+			var db = Titanium.Database.open('version8');
+			db.execute('UPDATE Tasks SET done = "true" WHERE task = (?)', event.source.mylabel.getText());
+			db.close();
+		});
+	}
 };
 
+//check the first click on the textField
 var alreadyClicked = false;
 function cleanText(e) {
 	if (alreadyClicked == false) {
+		//zeros the text field
 		$.textField.value = "";
 		alreadyClicked = true;
 	}
 }
 
-function doClick(e) {
+function doClick(e) {//check what image the user clicked
 	if (e.source.id == "dishes") {
 		if (e.source.image != '/Vdishes.png')
 			e.source.image = '/Vdishes.png';
@@ -112,11 +132,16 @@ var addTask = function(e) {
 		height : "80"
 	});
 	var label = Ti.UI.createLabel({
+		right : "80",
+		left : "85",
 		text : $.textField.getValue(),
 		height : Titanium.UI.SIZE,
 		width : Titanium.UI.SIZE,
 		color : "black",
 		layout : 'vertical',
+		font : {
+			fontSize : 20,
+		}
 	});
 	var DoneCheckbox = Ti.UI.createButton({
 		title : 'Done',
@@ -130,6 +155,7 @@ var addTask = function(e) {
 		backgroundColor : 'green',
 		backgroundImage : 'none',
 		color : '#fff',
+		mylabel : label, //custom property to know the text of the label
 		font : {
 			fontSize : 23,
 			fontWeight : 'bold'
@@ -155,6 +181,7 @@ var addTask = function(e) {
 			fontWeight : 'bold'
 		}
 	});
+	//deafult image
 	var imageShow = "/appicon.png";
 	if ($.dishes.image == '/Vdishes.png')
 		imageShow = "/dishes.png";
@@ -171,36 +198,45 @@ var addTask = function(e) {
 	row.add(image);
 	row.add(label);
 	$.tableView.appendRow(row);
-	DoneCheckbox.addEventListener("click", function(event) {
+	DoneCheckbox.addEventListener("click", function(event) {//if the "done" button clicked
 		row.backgroundColor = "#abce12";
-		var lineView = Titanium.UI.createView({
+		var lineView = Titanium.UI.createView({//add line over the text
+			left : "85",
 			width : label.getSize().width,
 			height : 1,
 			backgroundColor : label.color ? label.color : 'black',
 		});
 		row.add(lineView);
+		var db = Titanium.Database.open('version8');
+		//set done "true" in the database to know that I already clicked on the button
+		db.execute('UPDATE Tasks SET done = "true" WHERE task = (?)', event.source.mylabel.getText());
+		db.close();
 	});
-	var db = Titanium.Database.open('version6');
-	db.execute('INSERT INTO Tasks (task) VALUES (?)', $.textField.getValue());
+	var db = Titanium.Database.open('version8');
+	db.execute('INSERT INTO Tasks (task, image) VALUES (?,?)', $.textField.getValue(), imageShow);
 	db.close();
+	//zeros the textField
 	$.textField.value = "";
 };
 
-$.tableView.addEventListener('click', function(event) {
-	if (event.source.id == "delrow") {
+$.tableView.addEventListener('click', function(event) {//event listener for the delete button of every row
+	if (event.source.id == "delrow") {//if clicked on the delete button from the row view
 		$.tableView.deleteRow(event.index);
-		var db = Titanium.Database.open('version6');
+		var db = Titanium.Database.open('version8');
 		db.execute('DELETE FROM Tasks WHERE task = (?)', event.source.mylabel.getText());
 		db.close();
 	}
 });
 
+//add task button event listener
 $.addButton.addEventListener("click", addTask);
 
 $.deleteAllButton.addEventListener("click", function(e) {
 	var rd = [];
+	// delete all the data of the tableView by set is data to an empty array
 	$.tableView.data = rd;
-	var db = Titanium.Database.open('version6');
+	var db = Titanium.Database.open('version8');
+	//delete everything from database
 	db.execute('DELETE FROM Tasks');
 	db.close();
 });
