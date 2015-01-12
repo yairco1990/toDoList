@@ -1,18 +1,20 @@
-ts	1419603259000
+ts	1420741149000
 Default-Landscape.png	513333
 Default-Portrait.png	76153
 Default.png	110858
 Vdishes.png	24177
 Vlaundery.png	28899
 alloy
-	CFG.js	35
+	CFG.js	66
 	backbone.js	53109
 	constants.js	6654
 	controllers
 		BaseController.js	7259
-		index.js	10183
+		index.js	12335
+		menu.js	6964
 	styles
 		index.js	1003
+		menu.js	961
 	sync
 		localStorage.js	1913
 		properties.js	1848
@@ -20,6 +22,11 @@ alloy
 	underscore.js	41425
 	widget.js	1455
 	widgets
+		com.alcoapps.drawermenu
+			controllers
+				widget.js	2928
+			styles
+				widget.js	1018
 alloy.js	10406
 app.js	103
 appicon.png	18020
@@ -28,14 +35,26 @@ apple-touch-icon-114x114-precomposed.png	14012
 apple-touch-icon-57x57-precomposed.png	5449
 apple-touch-icon-72x72-precomposed.png	7641
 apple-touch-icon-precomposed.png	5449
+coffee.png	158110
 db
 	ListData.db	3072
 	One.db	2048
 	RowData.db	3072
 	two.db	2048
 dishes.png	12480
+drawericonb.png	1546
+drawericonb@2x.png	2330
+drawericonw.png	1533
+drawericonw@2x.png	2285
 favicon.ico	849
+ic_action_not_important.png	1452
 laundery.png	15955
+modules
+	com.alcoapps.actionbarhelper
+		LICENSE	34
+		com.alcoapps.actionbarhelper.js	2720
+		manifest	401
+		package.json	207
 themes
 	common.css	7631
 	default
@@ -191,4 +210,4 @@ titanium
 	dependencies.json	10476
 	package.json	660
 titanium.css	39835
-titanium.js	481190
+titanium.js	484204

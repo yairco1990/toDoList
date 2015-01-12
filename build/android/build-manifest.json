@@ -3,8 +3,8 @@
 	"deployType": "test",
 	"classname": "Todolist",
 	"platformPath": "C:\\ProgramData\\Titanium\\mobilesdk\\win32\\3.4.1.GA\\android",
-	"modulesHash": "d41d8cd98f00b204e9800998ecf8427e",
-	"modulesManifestHash": "d41d8cd98f00b204e9800998ecf8427e",
+	"modulesHash": "b0cf70d34c8303caf74714feebb07b46",
+	"modulesManifestHash": "1a59e48db8629ca7f40e0b6180f6e569",
 	"modulesNativeHash": "d41d8cd98f00b204e9800998ecf8427e",
 	"modulesBindingsHash": "d41d8cd98f00b204e9800998ecf8427e",
 	"gitHash": "5982e8f",
@@ -28,5 +28,5 @@
 	"activitiesHash": "d41d8cd98f00b204e9800998ecf8427e",
 	"servicesHash": "d41d8cd98f00b204e9800998ecf8427e",
 	"jssFilesHash": "d41d8cd98f00b204e9800998ecf8427e",
-	"jarLibHash": "ca442b8735fcb8004c986a191c56fd11"
+	"jarLibHash": "20e357c9127f22da86a4a715ba535e60"
 }

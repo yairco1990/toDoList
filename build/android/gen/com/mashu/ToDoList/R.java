@@ -1238,6 +1238,7 @@ containing a value of this type.
         public static final int app_name=0x7f0a000d;
     }
     public static final class style {
+        public static final int LightTheme=0x7f0b0090;
         /**  Mimic text appearance in select_dialog_item.xml 
          */
         public static final int TextAppearance_AppCompat_Base_CompactMenu_Dialog=0x7f0b0063;
@@ -1445,6 +1446,9 @@ containing a value of this type.
         public static final int Widget_AppCompat_ProgressBar=0x7f0b000a;
         public static final int Widget_AppCompat_ProgressBar_Horizontal=0x7f0b0009;
         public static final int Widget_AppCompat_Spinner_DropDown_ActionBar=0x7f0b0022;
+        public static final int actionBarNoSeperator=0x7f0b0091;
+        public static final int loginStyle=0x7f0b0092;
+        public static final int myEditText=0x7f0b0093;
     }
     public static final class styleable {
         /**  ============================================ 

@@ -34,7 +34,7 @@ var require = {
 		}
 	},
 	locales: [],
-	packages: [{"name":"Ti","location":"./titanium","main":"./Ti"}],
+	packages: [{"name":"Ti","location":"./titanium","main":"./Ti"},{"name":"com.alcoapps.actionbarhelper","location":"./modules/com.alcoapps.actionbarhelper","main":"com.alcoapps.actionbarhelper","root":1}],
 	project: {
 		id: "com.mashu.ToDoList",
 		name: "ToDoList"
@@ -17582,8 +17582,109 @@ define(function() {
 	};
 });
 
+},
+"com.alcoapps.actionbarhelper":function(){
+/* \modules\com.alcoapps.actionbarhelper\com.alcoapps.actionbarhelper.js */
+
+/* 
+* ActionBar Helper Class for Appcelerator Titanium
+* Author: Ricardo Alcocer
+* 
+* Licensed under the MIT License (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://alco.mit-license.org/
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+module.exports = function(o){
+	var actionBarHelper=function(win){
+		// make it useable in classic titanium
+		var isAndroid = Ti.Platform.osname === 'android';
+		if (!isAndroid){
+			console.log('This is an Android-only library.');
+			this.works = false;
+		}else if(Ti.Platform.Android.API_LEVEL <= 11){
+			console.log('Needs at least API Level 11.');
+			this.works = false;
+		}else{
+			this.win=win;
+			this.activity=win.getActivity();
+			this.actionBar=this.activity.actionBar;
+			this.works = true;
+		}
+	};
+	actionBarHelper.prototype.setTitle=function(title){
+		if (this.works){
+			this.actionBar.setTitle(title);
+		}else{
+			console.log('Error: this does not work');
+		}
+	};
+	actionBarHelper.prototype.setUpAction=function(action){
+		if (this.works && 'function' === typeof action){
+			this.actionBar.displayHomeAsUp=true;	
+			this.actionBar.onHomeIconItemSelected=action;
+		}else if(this.works){
+			this.actionBar.displayHomeAsUp=false;	
+			this.actionBar.onHomeIconItemSelected=null;
+		}else{
+			console.log('Error: this does not work');
+		}
+	};
+	actionBarHelper.prototype.displayHomeAsUp=function(value){
+		if(this.works){
+			this.actionBar.displayHomeAsUp=value;	
+		}else{
+			console.log('Error: this does not work');
+		}
+	};
+	actionBarHelper.prototype.setBackgroundImage=function(image){
+		if (this.works){
+			this.actionBar.setBackgroundImage(image);
+		}else{
+			console.log('Error: this does not work');
+		}
+	};
+	actionBarHelper.prototype.setIcon=function(icon){
+		if (this.works){
+			this.actionBar.icon=icon;	
+			this.actionBar.logo=icon;
+		}else{
+			console.log('Error: this does not work');
+		}
+	};
+	actionBarHelper.prototype.hide=function(){
+		if (this.works){
+			this.actionBar.hide();
+		}else{
+			console.log('Error: this does not work');
+		}
+	};
+	actionBarHelper.prototype.show=function(){
+		if (this.works){
+			this.actionBar.show();
+		}else{
+			console.log('Error: this does not work');
+		}
+	};
+	actionBarHelper.prototype.reloadMenu=function(){
+		if (this.works){
+			this.activity.invalidateOptionsMenu();
+		}else{
+			console.log('Error: this does not work');
+		}
+	};
+	
+	return new actionBarHelper(o);
+};
 }});
 require("Ti/App/Properties", function(p) {
 	p.setString("ti.ui.defaultunit","dp");
 });
-require(["Ti","Ti/Accelerometer","Ti/Analytics","Ti/BlobStream","Ti/BufferStream","Ti/Facebook/LoginButton","Ti/Filesystem/FileStream","Ti/Map/Annotation","Ti/Map/View","Ti/Media/AudioPlayer","Ti/Media/Sound","Ti/Media/VideoPlayer","Ti/Network/HTTPClient","Ti/Platform/DisplayCaps","Ti/UI/2DMatrix","Ti/UI/ActivityIndicator","Ti/UI/AlertDialog","Ti/UI/Clipboard","Ti/UI/EmailDialog","Ti/UI/OptionDialog","Ti/UI/Picker","Ti/UI/PickerColumn","Ti/UI/PickerRow","Ti/UI/ProgressBar","Ti/UI/ScrollView","Ti/UI/ScrollableView","Ti/UI/Slider","Ti/UI/Switch","Ti/UI/Tab","Ti/UI/TabGroup","Ti/UI/TableView","Ti/UI/TableViewRow","Ti/UI/TableViewSection","Ti/UI/TextArea","Ti/UI/TextField","Ti/UI/WebView","Ti/UI/Window","Ti/XML","Ti/Yahoo","Ti/_/colors","Ti/_/image","Ti/_/text","Ti/_/text!Ti/_/UI/WebViewBridge.js"]);
+require(["Ti","Ti/Accelerometer","Ti/Analytics","Ti/BlobStream","Ti/BufferStream","Ti/Facebook/LoginButton","Ti/Filesystem/FileStream","Ti/Map/Annotation","Ti/Map/View","Ti/Media/AudioPlayer","Ti/Media/Sound","Ti/Media/VideoPlayer","Ti/Network/HTTPClient","Ti/Platform/DisplayCaps","Ti/UI/2DMatrix","Ti/UI/ActivityIndicator","Ti/UI/AlertDialog","Ti/UI/Clipboard","Ti/UI/EmailDialog","Ti/UI/OptionDialog","Ti/UI/Picker","Ti/UI/PickerColumn","Ti/UI/PickerRow","Ti/UI/ProgressBar","Ti/UI/ScrollView","Ti/UI/ScrollableView","Ti/UI/Slider","Ti/UI/Switch","Ti/UI/Tab","Ti/UI/TabGroup","Ti/UI/TableView","Ti/UI/TableViewRow","Ti/UI/TableViewSection","Ti/UI/TextArea","Ti/UI/TextField","Ti/UI/WebView","Ti/UI/Window","Ti/XML","Ti/Yahoo","Ti/_/colors","Ti/_/image","Ti/_/text","Ti/_/text!Ti/_/UI/WebViewBridge.js","com.alcoapps.actionbarhelper"]);

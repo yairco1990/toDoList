@@ -8,16 +8,21 @@ function __processArg(obj, key) {
 }
 
 function Controller() {
-    function reloadFromDatabase(myText) {
+    function loadFromDatabase(json) {
         var row = Ti.UI.createTableViewRow({
             height: "80"
         });
         var label = Ti.UI.createLabel({
-            text: myText,
+            right: "80",
+            left: "85",
+            text: json.task,
             height: Titanium.UI.SIZE,
             width: Titanium.UI.SIZE,
             color: "black",
-            layout: "vertical"
+            layout: "vertical",
+            font: {
+                fontSize: 20
+            }
         });
         var DoneCheckbox = Ti.UI.createButton({
             title: "Done",
@@ -31,6 +36,7 @@ function Controller() {
             backgroundColor: "green",
             backgroundImage: "none",
             color: "#fff",
+            mylabel: label,
             font: {
                 fontSize: 23,
                 fontWeight: "bold"
@@ -56,8 +62,7 @@ function Controller() {
                 fontWeight: "bold"
             }
         });
-        var imageShow = "/appicon.png";
-        "/Vdishes.png" == $.dishes.image ? imageShow = "/dishes.png" : "/Vlaundery.png" == $.laundery.image && (imageShow = "/laundery.png");
+        var imageShow = json.image;
         var image = Ti.UI.createView({
             backgroundImage: imageShow,
             width: "70",
@@ -69,9 +74,19 @@ function Controller() {
         row.add(image);
         row.add(label);
         $.tableView.appendRow(row);
-        DoneCheckbox.addEventListener("click", function() {
+        if ("true" == json.done) {
             row.backgroundColor = "#abce12";
             var lineView = Titanium.UI.createView({
+                left: "85",
+                width: label.getSize().width,
+                height: 1,
+                backgroundColor: label.color ? label.color : "black"
+            });
+            row.add(lineView);
+        } else DoneCheckbox.addEventListener("click", function() {
+            row.backgroundColor = "#abce12";
+            var lineView = Titanium.UI.createView({
+                left: "85",
                 width: label.getSize().width,
                 height: 1,
                 backgroundColor: label.color ? label.color : "black"
@@ -111,17 +126,34 @@ function Controller() {
     var exports = {};
     var __defers = {};
     $.__views.win = Ti.UI.createWindow({
-        backgroundColor: "white",
-        layout: "vertical",
         id: "win"
     });
     $.__views.win && $.addTopLevelView($.__views.win);
+    $.__views.drawermenu = Alloy.createWidget("com.alcoapps.drawermenu", "widget", {
+        id: "drawermenu",
+        __parentSymbol: $.__views.win
+    });
+    $.__views.drawermenu.setParent($.__views.win);
     $.__views.__alloyId0 = Ti.UI.createView({
-        height: "60",
-        backgroundColor: "#848484",
+        backgroundColor: "#FF0000",
+        height: "80",
+        top: "0",
         id: "__alloyId0"
     });
     $.__views.win.add($.__views.__alloyId0);
+    $.__views.main = Ti.UI.createView({
+        backgroundColor: "white",
+        layout: "vertical",
+        id: "main",
+        top: "80"
+    });
+    $.__views.win.add($.__views.main);
+    $.__views.__alloyId1 = Ti.UI.createView({
+        height: "60",
+        backgroundColor: "#848484",
+        id: "__alloyId1"
+    });
+    $.__views.main.add($.__views.__alloyId1);
     $.__views.textField = Ti.UI.createTextField({
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         top: "3",
@@ -136,7 +168,7 @@ function Controller() {
         },
         id: "textField"
     });
-    $.__views.__alloyId0.add($.__views.textField);
+    $.__views.__alloyId1.add($.__views.textField);
     cleanText ? $.__views.textField.addEventListener("click", cleanText) : __defers["$.__views.textField!click!cleanText"] = true;
     $.__views.addButton = Ti.UI.createButton({
         right: "10",
@@ -146,13 +178,13 @@ function Controller() {
         title: "Add!",
         id: "addButton"
     });
-    $.__views.__alloyId0.add($.__views.addButton);
+    $.__views.__alloyId1.add($.__views.addButton);
     $.__views.ChooseImage = Ti.UI.createView({
         backgroundColor: "#848484",
         height: "75",
         id: "ChooseImage"
     });
-    $.__views.win.add($.__views.ChooseImage);
+    $.__views.main.add($.__views.ChooseImage);
     $.__views.dishes = Ti.UI.createImageView({
         image: "/dishes.png",
         width: "70",
@@ -179,46 +211,63 @@ function Controller() {
         title: "Click to delete all",
         id: "deleteAllButton"
     });
-    $.__views.win.add($.__views.deleteAllButton);
-    $.__views.__alloyId1 = Ti.UI.createView({
+    $.__views.main.add($.__views.deleteAllButton);
+    $.__views.__alloyId2 = Ti.UI.createView({
         height: "2",
         backgroundColor: "#abce12",
         top: "2",
-        id: "__alloyId1"
+        id: "__alloyId2"
     });
-    $.__views.win.add($.__views.__alloyId1);
+    $.__views.main.add($.__views.__alloyId2);
     $.__views.tableView = Ti.UI.createTableView({
         top: "5",
         id: "tableView"
     });
-    $.__views.win.add($.__views.tableView);
-    $.__views.__alloyId2 = Ti.UI.createView({
+    $.__views.main.add($.__views.tableView);
+    $.__views.__alloyId3 = Ti.UI.createView({
         height: "5",
         backgroundColor: "#848484",
-        id: "__alloyId2"
+        id: "__alloyId3"
     });
-    $.__views.win.add($.__views.__alloyId2);
+    $.__views.main.add($.__views.__alloyId3);
     exports.destroy = function() {};
     _.extend($, $.__views);
     $.win.open();
-    var db = Titanium.Database.install("dbRowData.db", "version6");
-    db.execute("CREATE TABLE IF NOT EXISTS Tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, task TEXT);");
-    var sql = db.execute("SELECT * FROM Tasks");
-    while (sql.isValidRow()) {
-        reloadFromDatabase(sql.fieldByName("task"));
-        sql.next();
-    }
+    var main = $.main;
+    var menu = Alloy.createController("menu").getView();
+    $.drawermenu.init({
+        menuview: menu,
+        mainview: main,
+        duration: 200,
+        parent: $.win
+    });
+    var xhr = Titanium.Network.createHTTPClient();
+    var url = "https://agile-eyrie-7613.herokuapp.com/services/todo";
+    xhr.open("GET", url);
+    xhr.onload = function() {
+        Ti.API.info("Success?" + this.status);
+        Ti.API.info(this.responseText);
+        var json = JSON.parse(this.responseText);
+        for (var i = 0; i < json.length; i++) loadFromDatabase(json[i]);
+    };
+    xhr.send();
+    xhr.abort();
     var alreadyClicked = false;
     var addTask = function() {
         var row = Ti.UI.createTableViewRow({
             height: "80"
         });
         var label = Ti.UI.createLabel({
+            right: "80",
+            left: "85",
             text: $.textField.getValue(),
             height: Titanium.UI.SIZE,
             width: Titanium.UI.SIZE,
             color: "black",
-            layout: "vertical"
+            layout: "vertical",
+            font: {
+                fontSize: 20
+            }
         });
         var DoneCheckbox = Ti.UI.createButton({
             title: "Done",
@@ -232,6 +281,7 @@ function Controller() {
             backgroundColor: "green",
             backgroundImage: "none",
             color: "#fff",
+            mylabel: label,
             font: {
                 fontSize: 23,
                 fontWeight: "bold"
@@ -273,32 +323,57 @@ function Controller() {
         DoneCheckbox.addEventListener("click", function() {
             row.backgroundColor = "#abce12";
             var lineView = Titanium.UI.createView({
+                left: "85",
                 width: label.getSize().width,
                 height: 1,
                 backgroundColor: label.color ? label.color : "black"
             });
             row.add(lineView);
+            var xhr = Titanium.Network.createHTTPClient();
+            url = "https://agile-eyrie-7613.herokuapp.com/services/doneUpdate";
+            xhr.open("POST", url);
+            xhr.onload = function() {
+                Ti.API.info("Success?" + this.status);
+            };
+            xhr.send({
+                task: $.textField.getValue()
+            });
+            xhr.abort();
         });
-        var db = Titanium.Database.open("version6");
-        db.execute("INSERT INTO Tasks (task) VALUES (?)", $.textField.getValue());
-        db.close();
+        var xhr = Titanium.Network.createHTTPClient();
+        url = "https://agile-eyrie-7613.herokuapp.com/services/todo";
+        xhr.open("POST", url);
+        xhr.onload = function() {
+            Ti.API.info("Success?" + this.status);
+        };
+        xhr.send({
+            id: null,
+            done: false,
+            task: $.textField.getValue(),
+            image: imageShow
+        });
+        xhr.abort();
         $.textField.value = "";
     };
     $.tableView.addEventListener("click", function(event) {
         if ("delrow" == event.source.id) {
             $.tableView.deleteRow(event.index);
-            var db = Titanium.Database.open("version6");
-            db.execute("DELETE FROM Tasks WHERE task = (?)", event.source.mylabel.getText());
-            db.close();
+            var xhr = Titanium.Network.createHTTPClient();
+            url = "https://agile-eyrie-7613.herokuapp.com/services/delete";
+            xhr.open("POST", url);
+            xhr.onload = function() {
+                Ti.API.info("Success?" + this.status);
+            };
+            xhr.send({
+                task: event.source.mylabel.getText()
+            });
+            xhr.abort();
         }
     });
     $.addButton.addEventListener("click", addTask);
     $.deleteAllButton.addEventListener("click", function() {
         var rd = [];
         $.tableView.data = rd;
-        var db = Titanium.Database.open("version6");
-        db.execute("DELETE FROM Tasks");
-        db.close();
     });
     __defers["$.__views.textField!click!cleanText"] && $.__views.textField.addEventListener("click", cleanText);
     __defers["$.__views.dishes!click!doClick"] && $.__views.dishes.addEventListener("click", doClick);
